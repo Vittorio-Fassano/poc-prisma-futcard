@@ -1,55 +1,54 @@
-import { connectionDB } from "../database/db.js";
+import prisma from "../config/db.js";
+import gameSchema from "../schemas/schema";
+import { Game } from "../types/types";
 
-export async function insertGame(
-  teams: string,
-  resultLowerCase: string,
-  stadium: string
+export async function insertGameRepository(
+  game: Game
 ) {
-  return connectionDB.query(
-    `INSERT INTO games (teams, result, stadium) 
-    VALUES ($1, $2, $3);`,
-    [teams, resultLowerCase, stadium]
-  );
+  return prisma.games.create({
+    data: game
+  });
 }
 
 export async function getGameByStadium(
-  stadium: string
+  stadium: number
 ) {
-  return connectionDB.query(
-    `SELECT * FROM games 
-    WHERE stadium LIKE $1;`,
-    [`${stadium}%`]); 
+  return prisma.games.findFirst({
+    where: {
+      stadium,
+    }
+  });
 }
 
 export async function getAllGames() {
-  return connectionDB.query(
-    `SELECT * FROM games;`);
+  return prisma.games.findMany();
 }
 
 export async function updateGameRepository(
-  teams: string,
-  resultLowerCase: string,
-  stadium: string,
-  id: string
+  game: Game,
+  id: number
 ) {
-  return connectionDB.query(
-    `UPDATE games 
-    SET teams = $1, result = $2, stadium = $3 
-    WHERE id = $4; `,
-    [teams, resultLowerCase, stadium, id]
-  );
+  return prisma.games.upsert({
+    where: {
+      id
+    },
+    create: game,
+    update: game
+  })
 }
 
-export async function getGameById(id: string) {
-  return connectionDB.query(
-    `SELECT * FROM games 
-    WHERE id = $1;`,
-    [id])
+export async function getGameById(id: number) {
+  return prisma.games.findUnique({
+    where: {
+      id,
+    }
+  });
 }
 
-export async function deleteGameRepository(id: string) {
-  return connectionDB.query(
-    `DELETE FROM games 
-    WHERE id = $1;`,
-    [id])
+export async function deleteGameRepository(id: number) {
+  return prisma.games.delete({
+    where: {
+      id,
+    }
+  });
 }

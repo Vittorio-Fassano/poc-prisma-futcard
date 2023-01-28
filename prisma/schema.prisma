@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model games {
+  id        Int      @id @default(autoincrement())
+  teams     String
+  result    Int
+  stadium   Int
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  results   results  @relation(fields: [result], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  stadiums  stadiums @relation(fields: [stadium], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model results {
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  games     games[]
+}
+
+model stadiums {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  games     games[]
+}

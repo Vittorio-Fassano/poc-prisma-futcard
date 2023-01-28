@@ -1,7 +1,7 @@
 export type Game = {
     teams: string;
-    result: string;
-    stadium: string;
+    result: number;
+    stadium: number;
 };
 
 export type Error = {
