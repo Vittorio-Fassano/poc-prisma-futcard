@@ -6,18 +6,18 @@ async function main() {
         data: [
             {
                 teams: "fluminense X botafogo",
-                result: 2,
-                stadium: 1
+                result: "empate",
+                stadium: "maracanã"
             },
             {
                 teams: "fluminense X nova iguaçu",
-                result: 1,
-                stadium: 1
+                result: "vitória",
+                stadium: "maracanã"
             },
             {
                 teams: "fluminense X guarani",
-                result: 1,
-                stadium: 2
+                result: "vitória",
+                stadium: "engenhão"
             },
         ]
     });
